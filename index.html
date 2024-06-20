@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Terminal</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #000;
+            color: #0f0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        #welcome {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        #terminal {
+            width: 80%;
+            max-width: 1000px;
+            background-color: #111;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        #output {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-y: auto;
+            max-height: 400px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        #command {
+            width: 100%;
+            background-color: #000;
+            color: #0f0;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+<div id="welcome">Welcome to Auron's Portfolio</div>
+<div id="terminal">
+    <div id="output"></div>
+    <input type="text" id="command" autofocus/>
+</div>
+
+<script>
+  const output = document.getElementById('output');
+  const commandInput = document.getElementById('command');
+
+  const commands = {
+    help: `Available commands:
+- help: Show available commands
+- clear: Clear the terminal
+- about: Show information about me
+- connect: Connect with me via LinkedIn: https://www.linkedin.com/in/auronvila/
+- github: Take a look on what I've done: https://github.com/auronvila
+- pwd`,
+
+    about: `As a dedicated Developer, I am passionate about my work and consistently strive to update my knowledge
+every day. With extensive experience in React and TypeScript, I have successfully built numerous websites
+using three.js. I am equally proficient in backend frameworks such as Nest.js, Node.js, and .Net (Core),
+and have utilized Azure as a reliable deployment server.
+Additionally, I possess expertise in various other frameworks, including Python, Pug, Tailwind CSS, Selenium automation,
+database management, and Linux. I am well-versed in version control with Git,
+and proficient in tools like Postman and various Adobe applications. Furthermore, I am
+confident in 3D art and animation using Blender, allowing me to create visually captivating and immersive experiences.
+My programming skills extend to C#,
+enabling me to develop robust and scalable applications. I am also currently expanding my knowledge in Blockchain and Solidity, as I delve
+into the exciting world of decentralized applications. With my diverse skill set and continuous learning, I am equipped to tackle a
+wide range of development projects with efficiency, creativity, and a keen eye for aesthetics.`,
+    connect: `Connect with me via LinkedIn: https://www.linkedin.com/in/auronvila/`,
+    github: `Take a look on what I've done: https://github.com/auronvila`,
+    pwd: '/home/user'
+  };
+
+  document.getElementById('terminal').addEventListener('click', function () {
+    commandInput.focus();
+  });
+
+  commandInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      const command = commandInput.value.trim();
+      handleCommand(command);
+      commandInput.value = '';
+    }
+  });
+
+  function handleCommand(command) {
+    switch (command) {
+      case 'help':
+        printOutput(commands.help);
+        break;
+      case 'clear':
+        output.innerHTML = '';
+        break;
+      case 'connect':
+        printOutput(commands.connect)
+        break;
+      case 'github':
+        printOutput(commands.github)
+        break;
+      case 'about':
+        printOutput(commands.about);
+        break;
+      case 'pwd':
+        printOutput(commands.pwd);
+        break;
+      default:
+        printOutput(`Unknown command: ${command}`);
+        break;
+    }
+  }
+
+  function printOutput(text) {
+    const pre = document.createElement('pre');
+    pre.innerHTML = text.replace(/(https?:\/\/[^\s]+)/g, '<a style="color: white" href="$1" target="_blank">$1</a>');
+    output.appendChild(pre);
+    output.scrollTop = output.scrollHeight;
+  }
+
+  // Display initial message
+  printOutput(commands.help);
+</script>
+</body>
+</html>
